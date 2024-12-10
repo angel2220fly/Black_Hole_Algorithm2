@@ -1,29 +1,46 @@
 def generate_headings_and_variations():
     """
     #Created by Jurijus Pacalovas.
-    Generate headings in the range 0 to 131,070 (17-bit), and for each heading,
-    generate 256 variations with 8 bits and 128 variations with 7 bits.
-    Ensure 8-bit variations are unique, with repeats two times: first in order (0-255),
-    then in reverse (255-0). Each variation is printed in one line with heading, 8-bit, and 7-bit.
+    Generate headings in the range 0 to 65535 (16-bit), and for each heading,
+    generate 128 variations with 8 bits from 0-127, and 128 variations with 8 bits
+    from 255-127. Each variation is printed in one line with heading, 8-bit, and 7-bit.
     """
-    max_headings = (2 ** 17)  # Total headings: 131,071 (0 to 131,070)
+    # First range of headings: 0 to (2^16)-1 (0-65535)
+    max_heading_1 = (2 ** 16)
 
-    for heading in range(max_headings):
-        heading_bits = f"{heading:017b}"  # Convert heading to 17-bit binary format
+    # Second range of headings: (2^16) to (2^17)-1 (65536-131070)
+    max_heading_2 = (2 ** 17)
+    
+    # First set of headings (0 to 65535)
+    for heading in range(max_heading_1):
+        heading_bits = f"{heading:016b}"  # Convert heading to 16-bit binary format
 
-        # Generate 256 variations (first 0-255, then 255-0)
-        variations_8_bits = list(range(256)) + list(reversed(range(256)))
+        # Generate 128 variations (0-127) for the first set
+        variations_8_bits = list(range(128))
 
         for i, variation in enumerate(variations_8_bits):
             variation_bits_8 = f"{variation:08b}"  # 8-bit variation
 
-            # Generate 7-bit variation (for the first 128 of the 256 variations)
-            if i % 256 < 128:  # First 128 variations only
-                variation_bits_7 = f"{variation % 128:07b}"  # Ensure 7-bit range
-                print(f"{heading_bits} {variation_bits_8} {variation_bits_7}")
-            else:
-                print(f"{heading_bits} {variation_bits_8} ---")  # Placeholder for no 7-bit variation
+            # Generate 7-bit variation for the first 128 variations only
+            variation_bits_7 = f"{variation:07b}"  # 7-bit variation
+            print(f"{heading_bits} {variation_bits_8} {variation_bits_7}")
+        
+        print()  # Blank line for separation between headings
+    
+    # Second set of headings (65536 to 131070)
+    for heading in range(max_heading_1, max_heading_2):
+        heading_bits = f"{heading:017b}"  # Convert heading to 17-bit binary format
 
+        # Generate 128 variations (255-127) for the second set
+        variations_8_bits = list(range(255, 127, -1))
+
+        for i, variation in enumerate(variations_8_bits):
+            variation_bits_8 = f"{variation:08b}"  # 8-bit variation
+
+            # Generate 7-bit variation for the first 128 variations only
+            variation_bits_7 = f"{variation % 128:07b}"  # 7-bit variation within range 0-127
+            print(f"{heading_bits} {variation_bits_8} {variation_bits_7}")
+        
         print()  # Blank line for separation between headings
 
 
