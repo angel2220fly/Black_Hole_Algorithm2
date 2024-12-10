@@ -1,5 +1,6 @@
 def generate_headings_and_variations():
     """
+    #Created by Jurijus Pacalovas.
     Generate headings in the range 0 to 131,070 (17-bit), and for each heading,
     generate 256 variations with 8 bits and 128 variations with 7 bits.
     Ensure 8-bit variations are unique, with repeats two times: first in order (0-255),
