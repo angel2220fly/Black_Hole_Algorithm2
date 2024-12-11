@@ -1,44 +1,36 @@
+import random
+
 def generate_headings_and_variations():
     """
-    #Created by Jurijus Pacalovas.
-    Generate headings in the range 0 to 65535 (16-bit), and for each heading,
-    generate 128 variations with 8 bits from 0-127, and 128 variations with 8 bits
-    from 255-127. Each variation is printed in one line with heading, 8-bit, and 7-bit.
+    Generate headings in two distinct ranges:
+    1. 0 to (2^16)-1 (0-65535) with 128 unique 8-bit variations from 0-255.
+    2. (2^16) to (2^17)-1 (65536-131070) with 128 unique 8-bit variations from 255-127.
+    Ensure all 8-bit variations are unique within each heading range.
     """
     # First range of headings: 0 to (2^16)-1 (0-65535)
-    max_heading_1 = (2 ** 16)
+    for heading in range(2 ** 16):
+        heading_bits = f"{heading:017b}"  # Convert heading to 17-bit binary format
 
-    # Second range of headings: (2^16) to (2^17)-1 (65536-131070)
-    max_heading_2 = (2 ** 17)
-    
-    # First set of headings (0 to 65535)
-    for heading in range(max_heading_1):
-        heading_bits = f"{heading:016b}"  # Convert heading to 16-bit binary format
+        # Generate 128 unique variations from 0 to 127
+        variations_8_bits = random.sample(range(256), 128)
 
-        # Generate 128 variations (0-127) for the first set
-        variations_8_bits = list(range(128))
-
-        for i, variation in enumerate(variations_8_bits):
-            variation_bits_8 = f"{variation:08b}"  # 8-bit variation
-
-            # Generate 7-bit variation for the first 128 variations only
-            variation_bits_7 = f"{variation:07b}"  # 7-bit variation
+        for variation in variations_8_bits:
+            variation_bits_8 = f"{variation:08b}"  # Convert to 8-bit binary format
+            variation_bits_7 = f"{variation % 128:07b}"  # Generate 7-bit variation
             print(f"{heading_bits} {variation_bits_8} {variation_bits_7}")
         
         print()  # Blank line for separation between headings
-    
-    # Second set of headings (65536 to 131070)
-    for heading in range(max_heading_1, max_heading_2):
+
+    # Second range of headings: (2^16) to (2^17)-1 (65536-131070)
+    for heading in range(2 ** 16, 2 ** 17):
         heading_bits = f"{heading:017b}"  # Convert heading to 17-bit binary format
 
-        # Generate 128 variations (255-127) for the second set
-        variations_8_bits = list(range(255, 127, -1))
+        # Generate 128 unique variations from 255 to 127
+        variations_8_bits = random.sample(range(128, 256), 128)
 
-        for i, variation in enumerate(variations_8_bits):
-            variation_bits_8 = f"{variation:08b}"  # 8-bit variation
-
-            # Generate 7-bit variation for the first 128 variations only
-            variation_bits_7 = f"{variation % 128:07b}"  # 7-bit variation within range 0-127
+        for variation in variations_8_bits:
+            variation_bits_8 = f"{variation:08b}"  # Convert to 8-bit binary format
+            variation_bits_7 = f"{variation % 128:07b}"  # Generate 7-bit variation (modulo to fit range)
             print(f"{heading_bits} {variation_bits_8} {variation_bits_7}")
         
         print()  # Blank line for separation between headings
