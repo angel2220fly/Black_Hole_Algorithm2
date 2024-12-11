@@ -1,5 +1,6 @@
 def generate_headings_and_variations():
     """
+    #Created Jurijus Pacalovas.
     Generate headings with exactly 128 8-bit variations for each heading:
     - 8-bit variations are reused cyclically across headings.
     - Each heading gets distinct variations, but variations may repeat across headings.
