@@ -1,25 +1,31 @@
+import random
+
 def generate_headings_and_variations():
     """
-    #Created Jurijus Pacalovas.
-    Generate headings with exactly 128 8-bit variations for each heading:
-    - 8-bit variations are reused cyclically across headings.
-    - Each heading gets distinct variations, but variations may repeat across headings.
+    #Created by Jurijus Pacalovas.
+    Generate 2^17 (131,072) headings, where each heading has:
+    - 128 unique 8-bit variations generated using PRNG (pseudo-random number generator).
+    - The first 64 variations are in normal order.
+    - The next 64 variations are the reverse of the first 64.
+    Each line includes a 17-bit heading, 8-bit variation, and a 7-bit version.
     """
-    total_8bit_values = 256  # Number of possible 8-bit values
+    max_headings = 2 ** 17  # Total number of headings
     variations_per_heading = 128  # Variations allocated per heading
-    max_headings = 2 ** 17  # Total number of headings (131,071)
-
-    all_variations = list(range(total_8bit_values))  # All possible 8-bit values
-
+    half_variations = variations_per_heading // 2  # Half of the variations (64)
+    
+    random.seed(42)  # Seed for reproducibility
+    
     for heading in range(max_headings):
         heading_bits = f"{heading:017b}"  # Convert heading to 17-bit binary format
 
-        # Cycle through the variations for the current heading
-        start_index = (heading * variations_per_heading) % total_8bit_values
-        variations_8_bits = [
-            all_variations[(start_index + i) % total_8bit_values]
-            for i in range(variations_per_heading)
-        ]
+        # Generate the first half (64 unique PRNG-based variations)
+        first_half = random.sample(range(256), half_variations)
+
+        # Create the second half as the reverse of the first half
+        second_half = list(reversed(first_half))
+
+        # Combine both halves
+        variations_8_bits = first_half + second_half
 
         for variation in variations_8_bits:
             variation_bits_8 = f"{variation:08b}"  # Convert to 8-bit binary format
